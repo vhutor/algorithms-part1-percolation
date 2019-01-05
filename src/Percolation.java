@@ -4,9 +4,12 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
 
     private boolean[][] sites;
-    private int begin = 1;
-    private int top, bottom;
-    private int end;
+    private int beginSites = 1;
+    private int endSites;
+
+    private int top = 0;
+    private int bottom;
+
     private int size;
     private int openSites;
     private WeightedQuickUnionUF weightedQuickUnionUF;
@@ -18,131 +21,130 @@ public class Percolation {
         }
 
         sites = new boolean[n + 1][n + 1];
-        for (int i = begin; i < n + 1; i++) {
-            for (int j = begin; j < n + 1; j++) {
-                sites[i][j] = false;
-            }
-        }
-        size = n * n;
-        end = n;
+        size = n * n; //?
+        endSites = n;
         openSites = 0;
-
-        top = 0;
         bottom = size + 2;
 
-        weightedQuickUnionUF = new WeightedQuickUnionUF(size + 2);
+        weightedQuickUnionUF = new WeightedQuickUnionUF(bottom);
     }
 
     public void open(int row, int col) {
-        if(row <= 0 || col <=0 || row > end || col > end) {
+        if(row <= 0 || col <=0 || row > endSites || col > endSites) {
             throw new IllegalArgumentException();
         }
 
         sites[row][col] = true;
 
-        if(row > begin && row < end && col > begin && col < end) {
+        if(row > beginSites && row < endSites && col > beginSites && col < endSites) {
             if(isOpen(row, col + 1)) {
-                weightedQuickUnionUF.union(row, col + 1);
+                weightedQuickUnionUF.union(convertToInt(row, col + 1), convertToInt(row, col));
             }
             if(isOpen(row + 1, col)) {
-                weightedQuickUnionUF.union(row + 1, col);
+                weightedQuickUnionUF.union(convertToInt(row + 1, col), convertToInt(row, col));
             }
             if(isOpen(row, col - 1)) {
-                weightedQuickUnionUF.union(row, col - 1);
+                weightedQuickUnionUF.union(convertToInt(row, col - 1), convertToInt(row, col));
             }
             if(isOpen(row - 1, col)) {
-                weightedQuickUnionUF.union(row, col);
+                weightedQuickUnionUF.union(convertToInt(row - 1, col), convertToInt(row, col));
             }
         }
 
-        if(row == begin && col == begin) {
+        if(row == beginSites && col == beginSites) {
+            weightedQuickUnionUF.union(convertToInt(row, col), top);
             if(isOpen(row, col + 1)) {
-                weightedQuickUnionUF.union(row, col + 1);
+                weightedQuickUnionUF.union(convertToInt(row, col + 1), convertToInt(row, col));
             }
             if(isOpen(row + 1, col)) {
-                weightedQuickUnionUF.union(row + 1, col);
+                weightedQuickUnionUF.union(convertToInt(row + 1, col), convertToInt(row, col));
             }
         }
 
-        if(row == begin && col > begin && col < end) {
+        if(row == beginSites && col > beginSites && col < endSites) {
+            weightedQuickUnionUF.union(convertToInt(row, col), top);
             if(isOpen(row, col + 1)) {
-                weightedQuickUnionUF.union(row, col + 1);
+                weightedQuickUnionUF.union(convertToInt(row, col + 1), convertToInt(row, col));
             }
             if(isOpen(row + 1, col)) {
-                weightedQuickUnionUF.union(row + 1, col);
+                weightedQuickUnionUF.union(convertToInt(row + 1, col), convertToInt(row, col));
             }
             if(isOpen(row, col - 1)) {
-                weightedQuickUnionUF.union(row, col - 1);
+                weightedQuickUnionUF.union(convertToInt(row, col - 1), convertToInt(row, col));
             }
         }
 
-        if(row == begin && col == end) {
+        if(row == beginSites && col == endSites) {
+            weightedQuickUnionUF.union(convertToInt(row, col), top);
             if(isOpen(row, col - 1)) {
-                weightedQuickUnionUF.union(row, col - 1);
+                weightedQuickUnionUF.union(convertToInt(row, col - 1), convertToInt(row, col));
             }
             if(isOpen(row + 1, col)) {
-                weightedQuickUnionUF.union(row + 1, col);
+                weightedQuickUnionUF.union(convertToInt(row + 1, col), convertToInt(row, col));
             }
         }
 
-        if(row == end && begin == end) {
+        if(row == endSites && col == endSites) {
+            weightedQuickUnionUF.union(convertToInt(row, col), bottom);
             if(isOpen(row, col - 1)) {
-                weightedQuickUnionUF.union(row, col - 1);
+                weightedQuickUnionUF.union(convertToInt(row, col - 1), convertToInt(row, col));
             }
             if(isOpen(row - 1, col)) {
-                weightedQuickUnionUF.union(row - 1, col);
+                weightedQuickUnionUF.union(convertToInt(row - 1, col), convertToInt(row, col));
             }
         }
 
-        if(row == end && col == begin) {
+        if(row == endSites && col == beginSites) {
+            weightedQuickUnionUF.union(convertToInt(row, col), bottom);
             if(isOpen(row - 1, col)) {
-                weightedQuickUnionUF.union(row - 1 , col);
+                weightedQuickUnionUF.union(convertToInt(row - 1 , col), convertToInt(row, col));
             }
             if(isOpen(row, col + 1)) {
-                weightedQuickUnionUF.union(row, col + 1);
+                weightedQuickUnionUF.union(convertToInt(row, col + 1), convertToInt(row, col));
             }
         }
 
-        if(col == begin && row > begin && row < end) {
+        if(col == beginSites && row > beginSites && row < endSites) {
             if(isOpen(row - 1, col)) {
-                weightedQuickUnionUF.union(row - 1, col);
+                weightedQuickUnionUF.union(convertToInt(row - 1, col), convertToInt(row, col));
             }
             if(isOpen(row + 1, col)) {
-                weightedQuickUnionUF.union(row + 1 , col);
+                weightedQuickUnionUF.union(convertToInt(row + 1 , col), convertToInt(row, col));
             }
             if(isOpen(row, col + 1)) {
-                weightedQuickUnionUF.union(row, col + 1);
+                weightedQuickUnionUF.union(convertToInt(row, col + 1), convertToInt(row, col));
             }
         }
 
-        if(col == end && row > begin && row < end) {
+        if(col == endSites && row > beginSites && row < endSites) {
             if(isOpen(row + 1, col)) {
-                weightedQuickUnionUF.union(row + 1, col);
+                weightedQuickUnionUF.union(convertToInt(row + 1, col), convertToInt(row, col));
             }
             if(isOpen(row - 1, col)) {
-                weightedQuickUnionUF.union(row - 1, col);
+                weightedQuickUnionUF.union(convertToInt(row - 1, col), convertToInt(row, col));
             }
             if(isOpen(row, col - 1)) {
-                weightedQuickUnionUF.union(row, col - 1);
+                weightedQuickUnionUF.union(convertToInt(row, col - 1), convertToInt(row, col));
             }
         }
 
-        if(row == end && col > begin && col < end) {
+        if(row == endSites && col > beginSites && col < endSites) {
+            weightedQuickUnionUF.union(convertToInt(row, col), bottom);
             if(isOpen(row, col - 1)) {
-                weightedQuickUnionUF.union(row, col - 1);
+                weightedQuickUnionUF.union(convertToInt(row, col - 1), convertToInt(row, col));
             }
             if(isOpen(row, col + 1)) {
-                weightedQuickUnionUF.union(row, col + 1);
+                weightedQuickUnionUF.union(convertToInt(row, col + 1), convertToInt(row, col));
             }
             if(isOpen(row - 1, col)) {
-                weightedQuickUnionUF.union(row - 1, col);
+                weightedQuickUnionUF.union(convertToInt(row - 1, col), convertToInt(row, col));
             }
         }
 
     }
 
     public boolean isOpen(int row, int col) {
-        if(row <= 0 || col <= 0 || row > end || col > end) {
+        if(row <= 0 || col <= 0 || row > endSites || col > endSites) {
             throw new IllegalArgumentException();
         }
 
@@ -150,15 +152,15 @@ public class Percolation {
     }
 
     public boolean isFull(int row, int col) {
-        if(row <= 0 || col <=0 || row > end || col > end) {
+        if(row <= 0 || col <=0 || row > endSites || col > endSites) {
             throw new IllegalArgumentException();
         }
 
-        return weightedQuickUnionUF.connected(begin, convertToInt(row, col));
+        return weightedQuickUnionUF.connected(top, convertToInt(row, col));
     }
 
     private int convertToInt(int row, int col) {
-        return (row * size) + col - size;
+        return (row * endSites) + (col + 1) - endSites;
     }
 
 
@@ -167,7 +169,7 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        return weightedQuickUnionUF.connected(begin, end);
+        return weightedQuickUnionUF.connected(top, bottom);
     }
 
     public static void main(String[] args) {
