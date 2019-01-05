@@ -140,20 +140,6 @@ public class Percolation {
                 weightedQuickUnionUF.union(convertToInt(row - 1, col), convertToInt(row, col));
             }
         }
-
-        for (int i = beginSites; i <= endSites; i++) {
-            for (int j = beginSites; j <= endSites; j++) {
-                System.out.print("[" + i + " " + j + "]: " + sites[i][j] + " ");
-            }
-            System.out.println();
-        }
-
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-
-
     }
 
     public boolean isOpen(int row, int col) {
