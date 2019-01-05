@@ -4,13 +4,12 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
 
     private boolean[][] sites;
-    private int beginSites = 1;
+    private int beginSites;
     private int endSites;
 
     private int top = 0;
     private int bottom;
 
-    private int size;
     private int openSites;
     private WeightedQuickUnionUF weightedQuickUnionUF;
 
@@ -21,12 +20,12 @@ public class Percolation {
         }
 
         sites = new boolean[n + 1][n + 1];
-        size = n * n; //?
+        beginSites = 1;
         endSites = n;
         openSites = 0;
-        bottom = size + 2;
+        bottom = n * n + 1;
 
-        weightedQuickUnionUF = new WeightedQuickUnionUF(bottom);
+        weightedQuickUnionUF = new WeightedQuickUnionUF(bottom + 1);
     }
 
     public void open(int row, int col) {
@@ -35,6 +34,7 @@ public class Percolation {
         }
 
         sites[row][col] = true;
+        openSites++;
 
         if(row > beginSites && row < endSites && col > beginSites && col < endSites) {
             if(isOpen(row, col + 1)) {
@@ -141,6 +141,19 @@ public class Percolation {
             }
         }
 
+        for (int i = beginSites; i <= endSites; i++) {
+            for (int j = beginSites; j <= endSites; j++) {
+                System.out.print("[" + i + " " + j + "]: " + sites[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+
     }
 
     public boolean isOpen(int row, int col) {
@@ -173,15 +186,21 @@ public class Percolation {
     }
 
     public static void main(String[] args) {
-        int size = 10;
+        int size = 3;
         Percolation percolation = new Percolation(size);
         double throshold = 0;
 
         while (!percolation.percolates()) {
-            percolation.open(StdRandom.uniform(size), StdRandom.uniform(size));
+
+            int i = StdRandom.uniform(size) + 1;
+            int j = StdRandom.uniform(size) + 1;
+            System.out.println(i + " " + j);
+            if(!percolation.isOpen(i , j)) {
+                percolation.open(i, j);
+            }
         }
 
-        throshold = percolation.numberOfOpenSites()/ (size * size);
+        throshold = (double) percolation.numberOfOpenSites()/ (size * size);
         System.out.println(throshold);
     }
 
