@@ -9,7 +9,7 @@ public class Permutation {
 
         while (num > 0) {
             String strNumber = StdIn.readString();
-            if(strNumber == null || strNumber.equals("")) {
+            if (strNumber == null || strNumber.equals("")) {
                 throw new IllegalArgumentException("The number should be not empty.");
             }
             randomizedQueue.enqueue(Integer.parseInt(strNumber));

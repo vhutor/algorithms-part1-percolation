@@ -81,7 +81,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         // last
         if (iterator == last) {
             item = last.item;
-            if(first == last) {
+            if (first == last) {
                 first = null;
                 last = null;
             } else {
