@@ -59,6 +59,12 @@ public class Deque<Item> implements Iterable<Item> {
             throw new IllegalArgumentException("Item could not be null.");
         }
 
+        if (last == null) {
+            last = new Node();
+            last.item = item;
+            return;
+        }
+
         Node oldLast = last;
 
         last = new Node();
@@ -96,18 +102,25 @@ public class Deque<Item> implements Iterable<Item> {
             throw new NoSuchElementException("There are no elements in the deque to delete");
         }
 
-        Node iterator = first.next;
-        while (iterator != last) {
+        if (size() == 1) {
+            first = null;
+            Item item = last.item;
+            last = null;
+            return item;
+        }
+
+        Node iterator = first;
+        while (iterator.next != null && iterator.next != last) {
             iterator = iterator.next;
         }
 
         last = iterator;
+        Item item = last.next.item;
         last.next = null;
-        last = null;
 
         size--;
 
-        return last.item;
+        return item;
     }
 
     public Iterator<Item> iterator() {

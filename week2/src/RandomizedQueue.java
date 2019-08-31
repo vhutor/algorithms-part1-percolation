@@ -64,16 +64,73 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // remove and return a random item
     public Item dequeue() {
-        return null;
+
+        int number = StdRandom.uniform(size) + 1;
+        int count = 1;
+
+        Item item = null;
+
+        Node iterator = first;
+        Node preLast = null;
+        while (count != number && iterator.next != null) {
+            preLast = iterator;
+            iterator = iterator.next;
+            count++;
+        }
+
+        // last
+        if (iterator == last) {
+            item = last.item;
+            if(first == last) {
+                first = null;
+                last = null;
+            } else {
+                Node oldLast = last;
+                last = preLast;
+                oldLast = null;
+            }
+            size--;
+            return item;
+        }
+
+        // first
+        if (iterator == first) {
+            item = first.item;
+            if(first == last) {
+                first = null;
+                last = null;
+            } else {
+                Node oldFirst = first;
+                first = first.next;
+                oldFirst = null;
+            }
+            size--;
+            return item;
+        }
+        else {
+            // remove in the middle
+            Node removeNode = iterator;
+            item = removeNode.item;
+            preLast.next = removeNode.next;
+            removeNode.next = null;
+            removeNode.item = null;
+            size--;
+        }
+
+        return item;
     }
 
     // return a random item (but do not remove it)
     public Item sample() {
         int number = StdRandom.uniform(size);
+        int count = 0;
 
+        Node iterator = first;
+        while (count != number && iterator.next != null) {
+            iterator = iterator.next;
+        }
 
-
-        return null;
+        return iterator.item;
     }
 
     // return an independent iterator over items in random order
