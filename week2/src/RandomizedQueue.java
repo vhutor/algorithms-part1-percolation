@@ -3,14 +3,6 @@ import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
- *
- *
- Throw a java.util.NoSuchElementException if the client calls either sample() or dequeue() when the randomized queue is empty.
- Throw a java.util.NoSuchElementException if the client calls the next() method in the iterator when there are no more items to return.
- *
- * */
-
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private Node first, last;

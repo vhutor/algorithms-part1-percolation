@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
  *
  * A double-ended queue or deque (pronounced “deck”) is a generalization of a stack and a queue that supports
  * adding and removing items from either the front or the back of the data structure. Create a generic data
- * type Deque that implements the following API:
+ * type Deque that implements the following API
  *
  * */
 public class Deque<Item> implements Iterable<Item> {
@@ -16,9 +16,8 @@ public class Deque<Item> implements Iterable<Item> {
 
     public Deque() {
         first = null;
-        last = first;
+        last = null;
         size = 0;
-
     }
 
     public boolean isEmpty() {
@@ -37,21 +36,16 @@ public class Deque<Item> implements Iterable<Item> {
         if (first == null) {
             first = new Node();
             last = first;
-            first.item = item;
-            size++;
-            return;
+        } else {
+            Node oldFirst = first;
+            if (last == first) {
+                last = oldFirst;
+            }
+            first = new Node();
+            first.next = oldFirst;
         }
 
-        Node oldFirst = first;
-
-        if (last == first) {
-            last = oldFirst;
-        }
-
-        first = new Node();
         first.item = item;
-        first.next = oldFirst;
-
         size++;
     }
 
@@ -63,18 +57,14 @@ public class Deque<Item> implements Iterable<Item> {
         if (last == null) {
             last = new Node();
             first = last;
-            last.item = item;
-            size++;
-            return;
+        } else {
+            Node oldLast = last;
+            last = new Node();
+            last.next = null;
+            oldLast.next = last;
         }
 
-        Node oldLast = last;
-
-        last = new Node();
         last.item = item;
-        last.next = null;
-        oldLast.next = last;
-
         size++;
     }
 
@@ -83,23 +73,20 @@ public class Deque<Item> implements Iterable<Item> {
             throw new NoSuchElementException("There are no elements in the deque to delete");
         }
 
-        Node oldFirst = first;
-        if (first.next == null) {
-            first = null;
-            last = null;
-        }
-
-        Item item = oldFirst.item;
-        oldFirst.next = null;
-        oldFirst = null;
-
+        Item item;
 
         if (first == last) {
             last = null;
+            item = first.item;
+            first = null;
+        } else {
+            Node oldFirst = first;
+            item = first.item;
+            first = first.next;
+            oldFirst.next = null;
         }
 
         size--;
-
         return item;
     }
 
@@ -108,25 +95,24 @@ public class Deque<Item> implements Iterable<Item> {
             throw new NoSuchElementException("There are no elements in the deque to delete");
         }
 
-        if (size() == 1) {
-            Item item = last.item;
+        Item item;
+
+        if (first == last) {
+            item = last.item;
             last = null;
             first = null;
-            size--;
-            return item;
-        }
+        } else {
+            Node iterator = first;
+            while (iterator.next != null && iterator.next != last) {
+                iterator = iterator.next;
+            }
 
-        Node iterator = first;
-        while (iterator.next != null && iterator.next != last) {
-            iterator = iterator.next;
+            last = iterator;
+            item = last.next.item;
+            last.next = null;
         }
-
-        last = iterator;
-        Item item = last.next.item;
-        last.next = null;
 
         size--;
-
         return item;
     }
 
@@ -160,7 +146,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     public static void main(String[] args) {
-        Deque<Integer> deque = new Deque<Integer>();
+        Deque<Integer> deque = new Deque<>();
         deque.isEmpty();
         deque.addFirst(2);
         deque.removeFirst();
