@@ -85,9 +85,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
                 first = null;
                 last = null;
             } else {
-                Node oldLast = last;
                 last = preLast;
-                oldLast = null;
             }
             size--;
             return item;
@@ -96,13 +94,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         // first
         if (iterator == first) {
             item = first.item;
-            if(first == last) {
+            if (first == last) {
                 first = null;
                 last = null;
             } else {
-                Node oldFirst = first;
                 first = first.next;
-                oldFirst = null;
             }
             size--;
             return item;

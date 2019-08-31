@@ -88,7 +88,7 @@ public class Deque<Item> implements Iterable<Item> {
         oldFirst = null;
 
 
-        if (first == last){
+        if (first == last) {
             last = null;
         }
 
