@@ -160,16 +160,17 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     public static void main(String[] args) {
-        Deque<String> deque = new Deque<>();
-        deque.addFirst("one");
-        deque.addLast("last");
-        deque.addFirst("two");
-        deque.addFirst("three");
+        Deque<Integer> deque = new Deque<Integer>();
+        deque.isEmpty();
+        deque.addFirst(2);
+        deque.removeFirst();
+        deque.isEmpty();
+        deque.isEmpty();
+        deque.addFirst(6);
+        deque.addFirst(7);
+        deque.removeFirst();
+        deque.removeFirst();
 
-        Iterator<String> iterator = deque.iterator();
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
-        }
     }
 
     private class Node {

@@ -8,7 +8,6 @@ import java.util.NoSuchElementException;
  *
  Throw a java.util.NoSuchElementException if the client calls either sample() or dequeue() when the randomized queue is empty.
  Throw a java.util.NoSuchElementException if the client calls the next() method in the iterator when there are no more items to return.
- Throw a java.lang.UnsupportedOperationException if the client calls the remove() method in the iterator.
  *
  * */
 
@@ -64,6 +63,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // remove and return a random item
     public Item dequeue() {
+        if (size() == 0) {
+            throw new NoSuchElementException("There are no elements in the deque to delete");
+        }
+
 
         int number = StdRandom.uniform(size) + 1;
         int count = 1;
@@ -106,7 +109,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         else {
             // remove in the middle
             Node removeNode = iterator;
-            item = removeNode.item;
+            item = preLast.item;
             preLast.next = removeNode.next;
             removeNode.next = null;
             removeNode.item = null;
@@ -118,6 +121,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // return a random item (but do not remove it)
     public Item sample() {
+        if (size() == 0) {
+            throw new NoSuchElementException("There are no elements in the deque to delete");
+        }
+
         int number = StdRandom.uniform(size);
         int count = 0;
 
@@ -141,7 +148,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         @Override
         public boolean hasNext() {
-            return current.next != null;
+            return current != null;
         }
 
         @Override
@@ -153,18 +160,28 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             current = current.next;
             return item;
         }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("You could not call the remove() method onto iterator");
+        }
     }
 
     // unit testing (required)
     public static void main(String[] args) {
-        RandomizedQueue<String> randomizedQueue = new RandomizedQueue<>();
-        randomizedQueue.enqueue("one");
-        randomizedQueue.enqueue("two");
-        randomizedQueue.enqueue("three");
-        Iterator<String> random = randomizedQueue.iterator();
-        while (random.hasNext()) {
-            System.out.println(random.next());
-        }
+        RandomizedQueue<Integer> rq = new RandomizedQueue<>();
+        rq.enqueue(336);
+        rq.enqueue(58);
+        rq.enqueue(158);
+        rq.enqueue(120);
+        rq.enqueue(3);
+        rq.enqueue(325);
+        rq.enqueue(212);
+        rq.dequeue();
+        rq.enqueue(302);
+        rq.size();
+        rq.sample();
+
     }
 
     private class Node {
