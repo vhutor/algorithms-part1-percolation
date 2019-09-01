@@ -5,14 +5,14 @@ public class Permutation {
     public static void main(String[] args) {
 
         int num = Integer.parseInt(args[0]);
-        RandomizedQueue<Integer> randomizedQueue = new RandomizedQueue<>();
+        RandomizedQueue<String> randomizedQueue = new RandomizedQueue<>();
 
         while (num > 0) {
-            String strNumber = StdIn.readString();
-            if (strNumber == null || strNumber.equals("")) {
+            String str = StdIn.readString();
+            if (str == null || str.equals("")) {
                 throw new IllegalArgumentException("The number should be not empty.");
             }
-            randomizedQueue.enqueue(Integer.parseInt(strNumber));
+            randomizedQueue.enqueue(str);
             num--;
         }
 

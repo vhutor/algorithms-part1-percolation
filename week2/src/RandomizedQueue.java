@@ -94,7 +94,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         else {
             // remove in the middle
             Node removeNode = iterator;
-            item = preLast.item;
+            item = removeNode.item;
             preLast.next = removeNode.next;
             removeNode.next = null;
             removeNode.item = null;
@@ -167,10 +167,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         rq.enqueue(3);
         rq.enqueue(325);
         rq.enqueue(212);
-        rq.dequeue();
+        System.out.println("Item was removed: " + rq.dequeue());
+
+        Iterator<Integer> iterator = rq.iterator();
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+
         rq.enqueue(302);
         rq.size();
         rq.sample();
+
+        Iterator<Integer> iterator1 = rq.iterator();
+        while (iterator.hasNext()){
+            System.out.println(iterator1.next());
+        }
 
     }
 
