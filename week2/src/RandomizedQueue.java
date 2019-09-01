@@ -12,7 +12,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public RandomizedQueue() {
         first = null;
         last = null;
-
         size = 0;
     }
 
@@ -35,22 +34,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (first == null) {
             first = new Node();
             last = first;
-            first.item = item;
-            size++;
-            return;
+        } else {
+            Node oldFirst = first;
+            if (last == first) {
+                last = oldFirst;
+            }
+            first = new Node();
+            first.next = oldFirst;
         }
 
-        Node oldFirst = first;
-        if (last == first) {
-            last = oldFirst;
-        }
-
-        first = new Node();
         first.item = item;
-        first.next = oldFirst;
-
         size++;
-
     }
 
     // remove and return a random item
@@ -59,9 +53,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             throw new NoSuchElementException("There are no elements in the deque to delete");
         }
 
-
         int number = StdRandom.uniform(size) + 1;
-        int count = 1;
+        int count = 0;
 
         Item item = null;
 
@@ -111,21 +104,26 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return item;
     }
 
+
     // return a random item (but do not remove it)
     public Item sample() {
+        return getSample().item;
+    }
+
+    private Node getSample() {
         if (size() == 0) {
             throw new NoSuchElementException("There are no elements in the deque to delete");
         }
 
-        int number = StdRandom.uniform(size);
+        int number = StdRandom.uniform(size) + 1;
         int count = 0;
 
-        Node iterator = first;
-        while (count != number && iterator.next != null) {
-            iterator = iterator.next;
+        Node node = first;
+        while (count != number && node.next != null) {
+            node = node.next;
         }
 
-        return iterator.item;
+        return node;
     }
 
     // return an independent iterator over items in random order
