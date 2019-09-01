@@ -3,6 +3,14 @@ import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+// TODO: THIS IS NOT QUITE RANDOM QUEUE EVEN IT HAS StdRandom.uniform(size) OF FINDING RANDOM VALUE
+// TODO: AND GETS RANDOM VALUE IN FOR LOOP. BUT, MAYBE, IT COULD BE IMPLEMENTED BETTER.
+
+/**
+ * Correctness:  35/43 tests passed
+ * Memory:       116/114 tests passed
+ * Timing:       151/193 tests passed
+ * */
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private Node first, last;
