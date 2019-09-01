@@ -55,8 +55,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         int number = StdRandom.uniform(size) + 1;
         int count = 0;
-
-        Item item = null;
+        Item item;
 
         Node iterator = first;
         Node preLast = null;
@@ -66,7 +65,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             count++;
         }
 
-        // last
         if (iterator == last) {
             item = last.item;
             if (first == last) {
@@ -74,33 +72,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
                 last = null;
             } else {
                 last = preLast;
+                last.next = null;
             }
-            size--;
-            return item;
         }
-
-        // first
-        if (iterator == first) {
+        else if (iterator == first) {
             item = first.item;
-            if (first == last) {
-                first = null;
-                last = null;
-            } else {
-                first = first.next;
-            }
-            size--;
-            return item;
+            first = first.next;
         }
         else {
-            // remove in the middle
-            Node removeNode = iterator;
-            item = removeNode.item;
-            preLast.next = removeNode.next;
-            removeNode.next = null;
-            removeNode.item = null;
-            size--;
+            item = iterator.item;
+            preLast.next = iterator.next;
+            iterator.next = null;
+            iterator.item = null;
         }
 
+        size--;
         return item;
     }
 
@@ -166,11 +152,37 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         rq.enqueue(120);
         rq.enqueue(3);
         rq.enqueue(325);
+        System.out.println("Item was removed: " + rq.dequeue());
+        System.out.println("Item was removed: " + rq.dequeue());
+        System.out.println("Item was removed: " + rq.dequeue());
+        System.out.println("Item was removed: " + rq.dequeue());
         rq.enqueue(212);
+        rq.enqueue(215);
+        rq.enqueue(214);
+        rq.enqueue(213);
+        System.out.println("Item was removed: " + rq.dequeue());
+        rq.enqueue(313);
+        rq.enqueue(413);
+        rq.enqueue(513);
+        rq.enqueue(613);
+        rq.enqueue(713);
+        rq.enqueue(813);
+        rq.enqueue(913);
+        System.out.println("Item was removed: " + rq.dequeue());
+        System.out.println("Item was removed: " + rq.dequeue());
+        System.out.println("Item was removed: " + rq.dequeue());
+        System.out.println("Item was removed: " + rq.dequeue());
+        System.out.println("Item was removed: " + rq.dequeue());
+        System.out.println("Item was removed: " + rq.dequeue());
+        System.out.println("Item was removed: " + rq.dequeue());
+        System.out.println("Item was removed: " + rq.dequeue());
+        System.out.println("Item was removed: " + rq.dequeue());
+        System.out.println("Item was removed: " + rq.dequeue());
+        System.out.println("Item was removed: " + rq.dequeue());
         System.out.println("Item was removed: " + rq.dequeue());
 
         Iterator<Integer> iterator = rq.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
 
@@ -179,7 +191,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         rq.sample();
 
         Iterator<Integer> iterator1 = rq.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             System.out.println(iterator1.next());
         }
 
