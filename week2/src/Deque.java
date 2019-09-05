@@ -9,6 +9,8 @@ import java.util.NoSuchElementException;
  * type Deque that implements the following API
  *
  * */
+
+// TODO: add java docs.
 public class Deque<Item> implements Iterable<Item> {
 
     private Node first, last;
